@@ -1,7 +1,7 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import DeclarativeBase, sessionmaker
 
-DATABASE_URL = "postgresql://diego2011:123456@localhost:5432/videogames_platform"
+DATABASE_URL = "postgresql://diego:123456@localhost:5432/videogames_platform"
 
 
 class Base(DeclarativeBase):
