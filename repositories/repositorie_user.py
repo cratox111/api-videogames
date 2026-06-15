@@ -6,10 +6,22 @@ def repositorie_create_user(db: Session, name: str, email: str, password: str):
 
     db.add(db_user)
     db.commit()
-    db.refresh(db_user)
     return "Creado"
 
 
 def repositorie_get_user_by_mail(db: Session, email: str):
     return db.query(User).filter(User.email == email).first()
+
+def repositorie_get_user_by_id(db: Session, id: str):
+    return db.query(User).filter(User.id == id).first()
+
+def repositorie_get_users(db: Session):
+    return db.query(User).all()
+
+
+def repositorie_user_delete(db: Session, id: str):
+    db.query(User).filter(User.id == id).delete()
+    db.commit()
+
+    return "Eliminado"
     
