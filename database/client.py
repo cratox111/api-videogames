@@ -1,7 +1,13 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import DeclarativeBase, sessionmaker
+from dotenv import load_dotenv
+import os
 
-DATABASE_URL = "postgresql://diego:123456@localhost:5432/videogames_platform"
+load_dotenv()
+
+DATABASE_URI = os.getenv("DATABASE_URI")
+
+DATABASE_URL = DATABASE_URI
 
 
 class Base(DeclarativeBase):

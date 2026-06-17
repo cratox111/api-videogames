@@ -1,6 +1,7 @@
 from fastapi import HTTPException, status
 
 from repositories.repositorie_user import repositorie_get_user_by_mail, repositorie_create_user, repositorie_get_user_by_id, repositorie_get_users, repositorie_user_delete
+from .services_auth import hash_password
 from database.client import SessionLocal
 
 db = SessionLocal()
@@ -30,7 +31,9 @@ def services_user_create(name: str, email: str, password: str):
             detail="El email ya existe"
         )
     
-    repositorie_create_user(db=db, name=name, email=email, password=password)
+    password_hash = hash_password(password=password)
+
+    repositorie_create_user(db=db, name=name, email=email, password=password_hash)
 
     return {"msg": "User creado"}
 
