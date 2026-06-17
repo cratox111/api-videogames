@@ -1,0 +1,51 @@
+from sqlalchemy import String, Integer, ForeignKey
+from sqlalchemy.orm import Mapped, mapped_column, relationship
+from datetime import datetime
+from sqlalchemy import DateTime
+from typing import Optional
+
+from database.client import Base
+
+
+class Videogame(Base):
+    __tablename__ = "videogames"
+
+    id: Mapped[int] = mapped_column(primary_key=True)
+    
+    title: Mapped[str] = mapped_column(
+        String(100), 
+        nullable=False
+    )
+
+
+    description: Mapped[str] = mapped_column(
+        String(500),
+        nullable=False
+    )
+
+    version: Mapped[str] = mapped_column(
+        String(10),
+        nullable=False
+    )
+
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime,
+        default=datetime.utcnow
+    )
+
+    likes_count: Mapped[Optional[int]] = mapped_column(
+        Integer,
+        default=0
+    )
+
+    owner_id: Mapped[int] = mapped_column(
+
+        ForeignKey("users.id")
+
+    )
+
+    user: Mapped["User"] = relationship(
+
+        back_populates="videogames"
+
+    )

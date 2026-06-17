@@ -1,7 +1,8 @@
 from sqlalchemy import String
-from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 from datetime import datetime
 from sqlalchemy import DateTime
+from typing import List
 
 from database.client import Base
 
@@ -17,7 +18,8 @@ class User(Base):
 
     email: Mapped[str] = mapped_column(
         String(100), 
-        nullable=False
+        nullable=False,
+        unique=True
     )
 
     password: Mapped[str] = mapped_column(
@@ -28,4 +30,12 @@ class User(Base):
     created_at: Mapped[datetime] = mapped_column(
         DateTime,
         default=datetime.utcnow
+    )
+
+    videogames: Mapped[List["Videogames"]] = relationship(
+
+        back_populates="user",
+
+        cascade="all, delete-orphan"
+
     )
