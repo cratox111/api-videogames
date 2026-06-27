@@ -38,6 +38,11 @@ class Videogame(Base):
         default=0
     )
 
+    url_download: Mapped[str] = mapped_column(
+        String(100),
+        nullable=False
+    )
+
     owner_id: Mapped[int] = mapped_column(
 
         ForeignKey("users.id")

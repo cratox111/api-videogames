@@ -32,7 +32,7 @@ class User(Base):
         default=datetime.utcnow
     )
 
-    videogames: Mapped[List["Videogames"]] = relationship(
+    videogames: Mapped[List["Videogame"]] = relationship(
 
         back_populates="user",
 
