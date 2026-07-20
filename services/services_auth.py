@@ -4,15 +4,15 @@ from dotenv import load_dotenv
 from datetime import datetime, timedelta
 import os
 from fastapi import status, HTTPException
+from sqlalchemy.orm import Session
+from fastapi.security import OAuth2PasswordBearer
 
-
-from database.client import SessionLocal
 from repositories.repositorie_user import repositorie_get_user_by_mail
 from schemas.schemas_user import UserDB
 
 load_dotenv()
 
-db = SessionLocal()
+oauth = OAuth2PasswordBearer(tokenUrl='/auth/login')
 
 SECRET = os.getenv("SECRET")
 ISS = os.getenv("ISS")
@@ -35,20 +35,28 @@ def hash_password(password: str):
     h_password = crypt.hash(password)
     return h_password
 
+def decode_token(token: str):
+    payload = jwt.decode(
+        token,
+        SECRET,
+        algorithms=["HS256"]
+    )
 
-def service_login(email: str, password: str):
-    user_data = repositorie_get_user_by_mail(
+    return payload
+
+
+
+def service_login(email: str, password: str, db: Session):
+    user = repositorie_get_user_by_mail(
         db=db,
         email=email
     )
 
-    if not user_data:
+    if not user:
         raise HTTPException(
             status_code=status.HTTP_406_NOT_ACCEPTABLE,
             detail="Email incorrecto"
         )
-
-    user = UserDB(**user_data)
 
     if not crypt.verify(password, user.password):
         raise HTTPException(
@@ -68,3 +76,9 @@ def service_login(email: str, password: str):
         "access_token": token,
         "token_type": "bearer"
     }
+
+
+
+def get_current_user(token: str, db: Session):
+    user = decode_token(token)
+    return user['sub']

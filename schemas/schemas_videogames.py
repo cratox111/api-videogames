@@ -4,7 +4,6 @@ class GameForm(BaseModel):
     title: str 
     description: str 
     version: str 
-    owner_id: int
     url_download: str
 
 

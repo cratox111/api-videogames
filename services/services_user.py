@@ -1,12 +1,11 @@
 from fastapi import HTTPException, status
+from sqlalchemy.orm import Session
 
 from repositories.repositorie_user import repositorie_get_user_by_mail, repositorie_create_user, repositorie_get_user_by_id, repositorie_get_users, repositorie_user_delete
 from .services_auth import hash_password
-from database.client import SessionLocal
 
-db = SessionLocal()
 
-def serveices_user_get(id: str):
+def serveices_user_get(id: str, db: Session):
     user = repositorie_get_user_by_id(db=db, id=id)
 
     if not user:
@@ -18,13 +17,13 @@ def serveices_user_get(id: str):
     return user
 
 
-def serveices_users_get():
+def serveices_users_get(db: Session):
     users = repositorie_get_users(db=db)
 
     return users
 
 
-def services_user_create(name: str, email: str, password: str):
+def services_user_create(name: str, email: str, password: str, db: Session):
     if repositorie_get_user_by_mail(db=db, email=email):
         raise HTTPException(
             status_code=status.HTTP_409_CONFLICT,
@@ -38,7 +37,7 @@ def services_user_create(name: str, email: str, password: str):
     return {"msg": "User creado"}
 
 
-def serveices_delete_user(id: str):
+def serveices_delete_user(id: str, db: Session):
     user = repositorie_user_delete(db=db, id=id)
 
     if not user:

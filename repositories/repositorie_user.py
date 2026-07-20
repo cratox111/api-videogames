@@ -20,7 +20,8 @@ def repositorie_get_users(db: Session):
 
 
 def repositorie_user_delete(db: Session, id: str):
-    db.query(User).filter(User.id == id).delete()
+    user = db.query(User).filter(User.id == id).first()
+    db.delete(user)
     db.commit()
 
     return "Eliminado"
