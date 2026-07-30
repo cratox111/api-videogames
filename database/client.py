@@ -27,8 +27,6 @@ SessionLocal = sessionmaker(
 )
 
 
-from sqlalchemy.orm import Session
-
 # Proporciona una sesión para cada petición y la cierra al finalizar
 def get_db():
     db = SessionLocal()

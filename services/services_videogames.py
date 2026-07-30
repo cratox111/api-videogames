@@ -1,22 +1,31 @@
 from fastapi import status, HTTPException, Depends
 
 from repositories.repository_videogames import repositorie_create_game, repositorie_get_videogames, repositorie_get_videogames_by_id, repositorie_get_videogames_by_title, repositorie_videogame_delete
+from schemas.schemas_videogames import VideogameResponse
 from sqlalchemy.orm import Session
+from utils.type_definition import ReturnMessage
 
 
-def services_get_game_by_title(title: str, db: Session):
+def services_get_game_by_title(title: str, db: Session) -> VideogameResponse:
     game = repositorie_get_videogames_by_title(db=db, title=title)
 
     if not game:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
-            detail="EL juego no existe"
+            detail="El juego no existe"
         )
     
-    return game
+    return VideogameResponse(
+        id=game.id,
+        title=game.title,
+        description=game.description,
+        version=game.version,
+        created_at=game.created_at,
+        likes_count=game.likes_count
+    )
 
 
-def services_get_game_by_id(id: str, db: Session):
+def services_get_game_by_id(id: str, db: Session) -> VideogameResponse:
     game = repositorie_get_videogames_by_id(db=db, id=id)
 
     if not game:
@@ -25,16 +34,34 @@ def services_get_game_by_id(id: str, db: Session):
             detail="EL juego no existe"
         )
     
-    return game
+    return VideogameResponse(
+        id=game.id,
+        title=game.title,
+        description=game.description,
+        version=game.version,
+        created_at=game.created_at,
+        likes_count=game.likes_count
+    )
 
 
-def services_games_get(db: Session):
+def services_games_get(db: Session) -> list:
     games = repositorie_get_videogames(db=db)
 
-    return games
+    games_list = []
+    for g in games:
+        g = VideogameResponse(
+            id=str(u.id), 
+            name=u.name, 
+            email=u.email, 
+            videogames=u.videogames
+        )
+        
+        games_list.append(g)
+
+    return games_list
     
 
-def services_add_game(title: str, description: str, version: str, owner_id: str, url_download: str, db: Session):
+def services_add_game(title: str, description: str, version: str, owner_id: str, url_download: str, db: Session) -> ReturnMessage:
     if repositorie_get_videogames_by_title(db=db, title=title):
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
@@ -46,7 +73,7 @@ def services_add_game(title: str, description: str, version: str, owner_id: str,
     return {"msg": "Juego añadido correctamente"}
 
 
-def services_delete_game(id: str, db: Session):
+def services_delete_game(id: str, db: Session) -> ReturnMessage:
     game = repositorie_get_videogames_by_id(db=db, id=id)
 
     if not game:
