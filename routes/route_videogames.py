@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 from typing import Annotated
 
-from services.services_videogames import services_add_game, serveices_games_get, services_get_game_by_title, services_get_game_by_id, services_delete_game
+from services.services_videogames import services_add_game, services_games_get, services_get_game_by_title, services_get_game_by_id, services_delete_game
 from services.services_auth import get_current_user, oauth
 from schemas.schemas_videogames import GameForm
 from database.client import get_db
@@ -23,7 +23,7 @@ async def route_get_game_by_title(title: str, db: Session = Depends(get_db)):
                         
 @route.get("/")
 async def route_get_games(db: Session = Depends(get_db)):
-    return serveices_games_get(db=db)
+    return services_games_get(db=db)
 
 @route.post('/')
 async def route_add_videogames(data: GameForm, token: Annotated[str, Depends(oauth)] ,db: Session = Depends(get_db)):

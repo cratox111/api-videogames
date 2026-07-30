@@ -9,8 +9,6 @@ class GameForm(BaseModel):
 
 
 class GameDB(BaseModel):
-    model_config = ConfigDict(from_attributes=True)
-
     id: str
     title: str 
     description: str

@@ -28,7 +28,7 @@ def services_get_game_by_id(id: str, db: Session):
     return game
 
 
-def serveices_games_get(db: Session):
+def services_games_get(db: Session):
     games = repositorie_get_videogames(db=db)
 
     return games
