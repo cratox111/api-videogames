@@ -1,4 +1,5 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict
+from datetime import datetime
 
 class GameForm(BaseModel):
     title: str 
@@ -8,6 +9,8 @@ class GameForm(BaseModel):
 
 
 class GameDB(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+
     id: str
     title: str 
     description: str
@@ -18,4 +21,12 @@ class GameDB(BaseModel):
     owner_id: int
     
      
-    
+class VideogameResponse(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+
+    id: int
+    title: str 
+    description: str
+    version: str 
+    created_at: datetime
+    likes_count: int

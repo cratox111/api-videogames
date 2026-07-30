@@ -3,8 +3,8 @@ from fastapi import status, HTTPException
 from sqlalchemy.orm import Session
 from fastapi.security import OAuth2PasswordBearer
 
-from repositories.repositorie_user import repositorie_get_user_by_mail
-from utils.segurity import crypt, create_payload_token, SECRET, decode_token
+from repositories.repository_user import repositorie_get_user_by_mail
+from utils.security import crypt, create_payload_token, SECRET, decode_token
 from schemas.schemas_user import UserDB
 
 

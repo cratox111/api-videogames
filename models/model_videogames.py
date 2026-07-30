@@ -7,6 +7,7 @@ from typing import Optional
 from database.client import Base
 
 
+# Crea el modelo Videogames para hacer referencia a la Tabla SQL
 class Videogame(Base):
     __tablename__ = "videogames"
 
@@ -43,12 +44,14 @@ class Videogame(Base):
         nullable=False
     )
 
+    # Le dice que esta columna referencia a la columna id en la tabla user
     owner_id: Mapped[int] = mapped_column(
 
         ForeignKey("users.id")
 
     )
 
+    # Crea la relacion con la tabla 'user'
     user: Mapped["User"] = relationship(
 
         back_populates="videogames"

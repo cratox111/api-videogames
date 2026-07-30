@@ -37,7 +37,7 @@ async def route_add_videogames(data: GameForm, token: Annotated[str, Depends(oau
     )
 
 @route.delete("/{id}")
-async def route_get_game_by_id(id:str, db: Session = Depends(get_db)):
+async def route_get_game_by_id(id:str, token: Annotated[str, Depends(oauth)], db: Session = Depends(get_db)):
     return services_delete_game(id=id, db=db)
 
 

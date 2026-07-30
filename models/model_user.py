@@ -6,6 +6,7 @@ from typing import List
 
 from database.client import Base
 
+# Crea el modelo User para hacer referencia a la Tabla SQL
 class User(Base):
     __tablename__ = 'users'
 
@@ -32,6 +33,7 @@ class User(Base):
         default=datetime.utcnow
     )
 
+    # Crea la relacion con la tabla 'videogames'
     videogames: Mapped[List["Videogame"]] = relationship(
 
         back_populates="user",

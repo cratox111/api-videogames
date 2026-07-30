@@ -1,6 +1,6 @@
 from fastapi import status, HTTPException, Depends
 
-from repositories.repositorie_videogames import repositorie_create_game, repositorie_get_videogames, repositorie_get_videogames_by_id, repositorie_get_videogames_by_title, repositorie_videogame_delete
+from repositories.repository_videogames import repositorie_create_game, repositorie_get_videogames, repositorie_get_videogames_by_id, repositorie_get_videogames_by_title, repositorie_videogame_delete
 from sqlalchemy.orm import Session
 
 
