@@ -1,7 +1,7 @@
 from fastapi import HTTPException, status
 from sqlalchemy.orm import Session
 
-from schemas.schemas_user import UserResponse
+from schemas.schemas_user import UserResponse, UserUpdate
 from repositories.repository_user import repositorie_get_user_by_mail, repositorie_create_user, repositorie_get_user_by_id, repositorie_get_users, repositorie_user_delete
 from utils.security import hash_password
 from utils.type_definition import ReturnMessage
@@ -53,6 +53,34 @@ def services_user_create(name: str, email: str, password: str, db: Session) -> R
     repositorie_create_user(db=db, name=name, email=email, password=password_hash)
 
     return {"msg": "User creado"}
+
+
+def services_upgrade_user(id: str, name: str, email: str, password: str, db: Session):
+    current_user = repositorie_get_user_by_id(db=db, id=id)
+
+    if current_user is None:
+        raise HTTPException(
+            status_code=404, 
+            detail="Usuario no encontrado"
+        )
+
+    if name != "":
+        current_user.name = name
+
+    if email != "":
+        current_user.email = email
+
+    if password != "":
+        current_user.password = hash_password(password)
+
+    db.commit()
+
+    db.refresh(current_user)
+
+    return {'msg': 'Dato actualizado'}
+    
+
+
 
 
 def services_delete_user(id: str, db: Session) -> ReturnMessage:

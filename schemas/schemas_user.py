@@ -1,4 +1,5 @@
 from pydantic import BaseModel, ConfigDict
+from typing import Optional
 from schemas.schemas_videogames import VideogameResponse
 
 
@@ -23,6 +24,7 @@ class UserResponse(BaseModel):
     videogames: list[VideogameResponse]
 
 
-class UserFormLogin(BaseModel):
-    email: str
-    password: str
+class UserUpdate(BaseModel):
+    name: Optional[str] = None
+    email: Optional[str] = None
+    password: Optional[str] = None
