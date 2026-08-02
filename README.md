@@ -4,7 +4,6 @@ API REST desarrollada con FastAPI para gestionar usuarios y videojuegos.
 Incluye autenticación mediante JWT, PostgreSQL y SQLAlchemy siguiendo una arquitectura por capas.
 
 ## Tecnologias:
-
 - Python
 - FastAPI
 - SQLAlchemy
@@ -15,7 +14,6 @@ Incluye autenticación mediante JWT, PostgreSQL y SQLAlchemy siguiendo una arqui
 - Alembic (cuando lo agregues)
 
 ## Arquitectura:
-
 - routes/
 
 
@@ -38,7 +36,6 @@ Incluye autenticación mediante JWT, PostgreSQL y SQLAlchemy siguiendo una arqui
 
 
 # Instalacion
-
 git clone
 
 cd backend
