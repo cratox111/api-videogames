@@ -47,12 +47,17 @@ async def route_user_upgrade(data: UserUpdate, user_current: Annotated[UserRespo
         name=data.name,
         email=data.email,
         password=data.password,
-        db=db
+        db=db,
+        user_current=user_current
     )
 
 
 @route.delete('/{id}')
 async def route_user_delete(id: str, user_current: Annotated[UserResponse, Depends(validate_token)], db: Session = Depends(get_db)):
-    return services_delete_user(id=id, db=db)
+    return services_delete_user(
+        id=id, 
+        db=db,
+        user_current=user_current
+    )
 
 

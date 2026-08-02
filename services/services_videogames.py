@@ -32,7 +32,7 @@ def services_get_game_by_id(id: str, db: Session) -> VideogameResponse:
     if not game:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
-            detail="EL juego no existe"
+            detail="El juego no existe"
         )
     
     return VideogameResponse(
@@ -78,8 +78,14 @@ def services_add_game(title: str, description: str, version: str, owner_id: str,
     return {"msg": "Juego añadido correctamente"}
 
 
-def services_upgrade_game(title: str, db: Session, new_title: str, description: str, version: str, url_download: str) -> ReturnMessage:
+def services_upgrade_game(title: str, db: Session, user_current: str, new_title: str, description: str, version: str, url_download: str) -> ReturnMessage:
     current_game = repositorie_get_videogames_by_title(db=db, title=title)
+
+    if current_game.id != user_current:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="No eres dueño de este juego"
+        )
 
     if new_title != "":
         current_game.title = new_title
@@ -99,8 +105,14 @@ def services_upgrade_game(title: str, db: Session, new_title: str, description: 
     return {'msg': 'Game actualizado'}
 
 
-def services_delete_game(id: str, db: Session) -> ReturnMessage:
+def services_delete_game(id: str, db: Session, user_current: str) -> ReturnMessage:
     game = repositorie_get_videogames_by_id(db=db, id=id)
+
+    if game.id != user_current:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="No eres dueño de este juego"
+        )
 
     if not game:
         raise HTTPException(

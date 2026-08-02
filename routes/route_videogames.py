@@ -3,7 +3,7 @@ from sqlalchemy.orm import Session
 from typing import Annotated
 
 from services.services_videogames import services_add_game, services_games_get, services_get_game_by_title, services_get_game_by_id, services_delete_game, services_upgrade_game
-from utils.security import oauth, validate_token
+from utils.security import validate_token
 from schemas.schemas_videogames import GameForm, VideogameUpgrade
 from schemas.schemas_user import UserResponse
 from database.client import get_db
@@ -46,12 +46,17 @@ async def route_upgrade_game(title: str, data: VideogameUpgrade, user_current: A
         description=data.description,
         version=data.version,
         url_download=data.url_download,
-        db=db
+        db=db,
+        user_current=user_current.id
     )
 
 
 @route.delete("/{id}")
 async def route_get_game_by_id(id:str, user_current: Annotated[UserResponse, Depends(validate_token)], db: Session = Depends(get_db)):
-    return services_delete_game(id=id, db=db)
+    return services_delete_game(
+        id=id, 
+        db=db, 
+        user_current=user_current.id
+    )
 
 

@@ -16,6 +16,7 @@ load_dotenv()
 
 SECRET = os.getenv("SECRET")
 ISS = os.getenv("ISS")
+TIME_EXP = os.getenv("ACCESS_TOKEN_EXPIRE_MINUTES")
 
 crypt = CryptContext(
     schemes=["argon2"],
@@ -27,7 +28,7 @@ oauth = OAuth2PasswordBearer(tokenUrl='/auth/login')
 def create_payload_token(user_id: str):
     return {
         "sub": str(user_id),
-        "exp": datetime.utcnow() + timedelta(minutes=30),
+        "exp": datetime.utcnow() + timedelta(minutes=TIME_EXP),
         "iss": ISS,
         "iat": datetime.utcnow(),
     }
@@ -71,7 +72,7 @@ def validate_token(token: Annotated[str, Depends(oauth)], db: Session = Depends(
     if not user:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
-            detail='SUB invalido'
+            detail='Token invalido'
         )
     
 

@@ -17,13 +17,13 @@ def service_login(email: str, password: str, db: Session) -> TokenAcces:
     if not user:
         raise HTTPException(
             status_code=status.HTTP_406_NOT_ACCEPTABLE,
-            detail="Email incorrecto"
+            detail="Credenciales incorrectas"
         )
 
     if not crypt.verify(password, user.password):
         raise HTTPException(
             status_code=status.HTTP_406_NOT_ACCEPTABLE,
-            detail="Contraseña incorrecta"
+            detail="Credenciales incorrectas"
         )
 
     payload = create_payload_token(user.id)

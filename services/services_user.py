@@ -1,7 +1,7 @@
 from fastapi import HTTPException, status
 from sqlalchemy.orm import Session
 
-from schemas.schemas_user import UserResponse, UserUpdate
+from schemas.schemas_user import UserResponse
 from repositories.repository_user import repositorie_get_user_by_mail, repositorie_create_user, repositorie_get_user_by_id, repositorie_get_users, repositorie_user_delete
 from utils.security import hash_password
 from utils.type_definition import ReturnMessage
@@ -55,13 +55,19 @@ def services_user_create(name: str, email: str, password: str, db: Session) -> R
     return {"msg": "User creado"}
 
 
-def services_upgrade_user(id: str, name: str, email: str, password: str, db: Session) -> ReturnMessage:
+def services_upgrade_user(id: str, name: str, email: str, password: str, db: Session, user_current: str) -> ReturnMessage:
     current_user = repositorie_get_user_by_id(db=db, id=id)
 
     if current_user is None:
         raise HTTPException(
             status_code=404, 
             detail="Usuario no encontrado"
+        )
+    
+    if current_user.id != user_current:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Solo el propietario de la cuenta puede realizar esto"
         )
 
     if name != "":
@@ -83,14 +89,22 @@ def services_upgrade_user(id: str, name: str, email: str, password: str, db: Ses
 
 
 
-def services_delete_user(id: str, db: Session) -> ReturnMessage:
-    user = repositorie_user_delete(db=db, id=id)
+def services_delete_user(id: str, db: Session, user_current: str) -> ReturnMessage:
+    user = repositorie_get_user_by_id(id=id, db=db)
+
+    if user.id != user_current:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Solo el propietario de la cuenta puede realizar esto"
+        )
 
     if not user:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail="User no existe"
         )
+    
+    repositorie_user_delete(db=db, id=id)
 
     return {'msg': 'User eliminado correctamente'}
 
