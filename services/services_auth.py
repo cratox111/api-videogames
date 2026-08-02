@@ -2,14 +2,10 @@ from jose import jwt
 from fastapi import status, HTTPException
 from sqlalchemy.orm import Session
 from fastapi.security import OAuth2PasswordBearer
-from typing import TypedDict
 
 from repositories.repository_user import repositorie_get_user_by_mail
-from utils.security import crypt, create_payload_token, SECRET, decode_token
+from utils.security import crypt, create_payload_token, SECRET
 from utils.type_definition import TokenAcces
-
-
-oauth = OAuth2PasswordBearer(tokenUrl='/auth/login')
 
 
 def service_login(email: str, password: str, db: Session) -> TokenAcces:
@@ -42,8 +38,3 @@ def service_login(email: str, password: str, db: Session) -> TokenAcces:
         "access_token": token,
         "token_type": "bearer"
     }
-
-
-def get_current_user(token: str, db: Session) -> str:
-    user = decode_token(token)
-    return user['sub']

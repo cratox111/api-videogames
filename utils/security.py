@@ -1,12 +1,16 @@
-from fastapi import HTTPException, status
+from fastapi import HTTPException, status, Depends
+from fastapi.security import OAuth2PasswordBearer
 from dotenv import load_dotenv
 from datetime import datetime, timedelta
 from passlib.context import CryptContext
 from sqlalchemy.orm import Session
 from jose import jwt, JWTError, ExpiredSignatureError
 import os
+from typing import Annotated
+from database.client import get_db
 
 from repositories.repository_user import repositorie_get_user_by_id
+from schemas.schemas_user import UserResponse
 
 load_dotenv()
 
@@ -17,6 +21,8 @@ crypt = CryptContext(
     schemes=["argon2"],
     deprecated="auto"
 )
+
+oauth = OAuth2PasswordBearer(tokenUrl='/auth/login')
 
 def create_payload_token(user_id: str):
     return {
@@ -31,7 +37,7 @@ def hash_password(password: str):
     h_password = crypt.hash(password)
     return h_password
 
-def validate_token(token: str, db: Session):
+def validate_token(token: Annotated[str, Depends(oauth)], db: Session = Depends(get_db)):
     try: 
         payload = jwt.decode(
             token,
@@ -60,12 +66,18 @@ def validate_token(token: str, db: Session):
             detail='Token inválido'
         )
     
-    
-    if not repositorie_get_user_by_id(db=db, id=sub):
+    user = repositorie_get_user_by_id(db=db, id=sub)
+
+    if not user:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail='SUB invalido'
         )
     
 
-    return payload
+    return UserResponse(
+        id=user.id,
+        name=user.name,
+        email=user.email,
+        videogames=user.videogames
+    )

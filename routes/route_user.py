@@ -3,18 +3,19 @@ from sqlalchemy.orm import Session
 from typing import Annotated
 
 from services.services_user import services_user_create, services_user_get, services_users_get, services_delete_user, services_response_user, services_upgrade_user
-from services.services_auth import oauth, get_current_user
-from schemas.schemas_user import UserForm, UserUpdate
+from utils.security import oauth
+from schemas.schemas_user import UserForm, UserUpdate, UserResponse
 from database.client import get_db
+from utils.security import validate_token
 
 route = APIRouter(prefix= "/user", tags=['User'])
 
 
 
 @route.get('/response')
-async def route_user_reponse(token: Annotated[str, Depends(oauth)], db: Session = Depends(get_db)):
+async def route_user_reponse(user_current: Annotated[UserResponse, Depends(validate_token)], db: Session = Depends(get_db)):
     return services_response_user(
-        id=get_current_user(token=token, db=db),
+        id=user_current.id,
         db=db
     )
 
@@ -40,9 +41,9 @@ async def route_user_create(data: UserForm, db: Session = Depends(get_db)):
 
 
 @route.patch('/{id}')
-async def route_user_upgrade(data: UserUpdate, token: Annotated[str, Depends(oauth)], db: Session = Depends(get_db)):
+async def route_user_upgrade(data: UserUpdate, user_current: Annotated[UserResponse, Depends(validate_token)], db: Session = Depends(get_db)):
     return services_upgrade_user(
-        id=get_current_user(token=token, db=db),
+        id=user_current.id,
         name=data.name,
         email=data.email,
         password=data.password,
@@ -51,7 +52,7 @@ async def route_user_upgrade(data: UserUpdate, token: Annotated[str, Depends(oau
 
 
 @route.delete('/{id}')
-async def route_user_delete(id: str, db: Session = Depends(get_db)):
+async def route_user_delete(id: str, user_current: Annotated[UserResponse, Depends(validate_token)], db: Session = Depends(get_db)):
     return services_delete_user(id=id, db=db)
 
 
