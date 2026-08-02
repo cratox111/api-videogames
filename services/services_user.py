@@ -55,7 +55,7 @@ def services_user_create(name: str, email: str, password: str, db: Session) -> R
     return {"msg": "User creado"}
 
 
-def services_upgrade_user(id: str, name: str, email: str, password: str, db: Session):
+def services_upgrade_user(id: str, name: str, email: str, password: str, db: Session) -> ReturnMessage:
     current_user = repositorie_get_user_by_id(db=db, id=id)
 
     if current_user is None:

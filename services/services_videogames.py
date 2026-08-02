@@ -21,7 +21,8 @@ def services_get_game_by_title(title: str, db: Session) -> VideogameResponse:
         description=game.description,
         version=game.version,
         created_at=game.created_at,
-        likes_count=game.likes_count
+        likes_count=game.likes_count,
+        url_download=game.url_download
     )
 
 
@@ -40,7 +41,8 @@ def services_get_game_by_id(id: str, db: Session) -> VideogameResponse:
         description=game.description,
         version=game.version,
         created_at=game.created_at,
-        likes_count=game.likes_count
+        likes_count=game.likes_count,
+        url_download=game.url_download
     )
 
 
@@ -50,10 +52,13 @@ def services_games_get(db: Session) -> list:
     games_list = []
     for g in games:
         g = VideogameResponse(
-            id=str(u.id), 
-            name=u.name, 
-            email=u.email, 
-            videogames=u.videogames
+            id=g.id,
+            title=g.title,
+            description=g.description,
+            version=g.version,
+            created_at=g.created_at,
+            likes_count=g.likes_count,
+            url_download=g.url_download
         )
         
         games_list.append(g)
@@ -71,6 +76,27 @@ def services_add_game(title: str, description: str, version: str, owner_id: str,
     repositorie_create_game(db=db, title=title, description=description, version=version, owner_id=owner_id, url_download=url_download)
 
     return {"msg": "Juego añadido correctamente"}
+
+
+def services_upgrade_game(title: str, db: Session, new_title: str, description: str, version: str, url_download: str) -> ReturnMessage:
+    current_game = repositorie_get_videogames_by_title(db=db, title=title)
+
+    if new_title != "":
+        current_game.title = new_title
+    
+    if description != "":
+        current_game.description = description
+    
+    if version != "":
+        current_game.version = version
+
+    if url_download != "":
+        current_game.url_download = url_download
+
+    db.commit()
+    db.refresh(current_game)
+
+    return {'msg': 'Game actualizado'}
 
 
 def services_delete_game(id: str, db: Session) -> ReturnMessage:
