@@ -3,9 +3,9 @@ from fastapi import status, HTTPException
 from sqlalchemy.orm import Session
 from fastapi.security import OAuth2PasswordBearer
 
-from repositories.repository_user import repositorie_get_user_by_mail
-from utils.security import crypt, create_payload_token, SECRET
-from utils.type_definition import TokenAcces
+from app.repositories.repository_user import repositorie_get_user_by_mail
+from app.utils.security import crypt, create_payload_token, SECRET
+from app.utils.type_definition import TokenAcces
 
 
 def service_login(email: str, password: str, db: Session) -> TokenAcces:

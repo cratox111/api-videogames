@@ -1,9 +1,9 @@
-from fastapi import status, HTTPException, Depends
-
-from repositories.repository_videogames import repositorie_create_game, repositorie_get_videogames, repositorie_get_videogames_by_id, repositorie_get_videogames_by_title, repositorie_videogame_delete
-from schemas.schemas_videogames import VideogameResponse
+from fastapi import status, HTTPException
 from sqlalchemy.orm import Session
-from utils.type_definition import ReturnMessage
+
+from app.repositories.repository_videogames import repositorie_create_game, repositorie_get_videogames, repositorie_get_videogames_by_id, repositorie_get_videogames_by_title, repositorie_videogame_delete
+from app.schemas.schemas_videogames import VideogameResponse
+from app.utils.type_definition import ReturnMessage
 
 
 def services_get_game_by_title(title: str, db: Session) -> VideogameResponse:

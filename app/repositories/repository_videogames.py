@@ -1,5 +1,5 @@
 from sqlalchemy.orm import Session
-from models.model_videogames import Videogame
+from app.models.model_videogames import Videogame
 
 
 

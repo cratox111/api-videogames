@@ -2,11 +2,11 @@ from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 from typing import Annotated
 
-from services.services_videogames import services_add_game, services_games_get, services_get_game_by_title, services_get_game_by_id, services_delete_game, services_upgrade_game
-from utils.security import validate_token
-from schemas.schemas_videogames import GameForm, VideogameUpgrade
-from schemas.schemas_user import UserResponse
-from database.client import get_db
+from app.services.services_videogames import services_add_game, services_games_get, services_get_game_by_title, services_get_game_by_id, services_delete_game, services_upgrade_game
+from app.utils.security import validate_token
+from app.schemas.schemas_videogames import GameForm, VideogameUpgrade
+from app.schemas.schemas_user import UserResponse
+from app.database.client import get_db
 
 route = APIRouter(prefix="/videogames", tags=["Videogames"])
 

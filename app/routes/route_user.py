@@ -2,14 +2,12 @@ from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 from typing import Annotated
 
-from services.services_user import services_user_create, services_user_get, services_users_get, services_delete_user, services_response_user, services_upgrade_user
-from utils.security import oauth
-from schemas.schemas_user import UserForm, UserUpdate, UserResponse
-from database.client import get_db
-from utils.security import validate_token
+from app.services.services_user import services_user_create, services_user_get, services_users_get, services_delete_user, services_response_user, services_upgrade_user
+from app.schemas.schemas_user import UserForm, UserUpdate, UserResponse
+from app.database.client import get_db
+from app.utils.security import validate_token
 
 route = APIRouter(prefix= "/user", tags=['User'])
-
 
 
 @route.get('/response')

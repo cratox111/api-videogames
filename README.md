@@ -75,16 +75,23 @@ uvicorn main:app --reload
 
 ## Endpoints importantes
 GET /user/response: Obtiene la informacion del usuario actual. (Es necesario logearte)
+
 GET /users: Obtiene todos los usuarios de la DB.
+
 DELETE /user/{id}: Elimina a un juego usuario mediante el id. (Es necesario logearte)
+
 POST /videogames: Añade un juego con la informacion que se le introdusca. (Es necesario logearte)
+
 DELETE /videogames{id}: Elimina a un videojuego mediante el id. (Es necesario logearte)
 
 ## Autentificacion
 
 1. Se obtiene el token de POST /auth/login
+
 2. Se valida el token mediante la funcion validate_token(token, db)
+
 3. De ser validado correctamente regresa un Objeto ResponseUser con la info del propietario del token
+
 4. Esto es usa en los distintos endpoint que necesite saber el user_current
 
 ## Próximas mejoras
@@ -92,23 +99,6 @@ DELETE /videogames{id}: Elimina a un videojuego mediante el id. (Es necesario lo
 - Alembic
 - Docker
 - Tests
-
-Cliente
-   │
-   ▼
-Routes
-   │
-   ▼
-Services
-   │
-   ▼
-Repositories
-   │
-   ▼
-SQLAlchemy
-   │
-   ▼
-PostgreSQL
 
 -------------------------------
 Diego Ochoa Gonzalez

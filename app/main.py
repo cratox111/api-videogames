@@ -1,6 +1,6 @@
 from fastapi import FastAPI
-from database.client import Base, engine
-from routes import route_user, route_videogames, route_auth
+from app.database.client import Base, engine
+from app.routes import route_user, route_videogames, route_auth
 
 app = FastAPI()
 

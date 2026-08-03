@@ -1,5 +1,5 @@
 from sqlalchemy.orm import Session
-from models.model_user import User
+from app.models.model_user import User
 
 def repositorie_create_user(db: Session, name: str, email: str, password: str):
     db_user = User(name=name, email=email, password=password)

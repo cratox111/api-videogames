@@ -1,6 +1,6 @@
 from pydantic import BaseModel, ConfigDict
 from typing import Optional
-from schemas.schemas_videogames import VideogameResponse
+from app.schemas.schemas_videogames import VideogameResponse
 
 
 class UserForm(BaseModel):

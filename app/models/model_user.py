@@ -4,7 +4,7 @@ from datetime import datetime
 from sqlalchemy import DateTime
 from typing import List
 
-from database.client import Base
+from app.database.client import Base
 
 # Crea el modelo User para hacer referencia a la Tabla SQL
 class User(Base):

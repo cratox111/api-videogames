@@ -7,10 +7,10 @@ from sqlalchemy.orm import Session
 from jose import jwt, JWTError, ExpiredSignatureError
 import os
 from typing import Annotated
-from database.client import get_db
 
-from repositories.repository_user import repositorie_get_user_by_id
-from schemas.schemas_user import UserResponse
+from app.repositories.repository_user import repositorie_get_user_by_id
+from app.schemas.schemas_user import UserResponse
+from app.database.client import get_db
 
 load_dotenv()
 
