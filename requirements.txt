@@ -1,18 +1,15 @@
-Package              Version
--------------------- ---------
-argon2-cffi          25.1.0
-argon2-cffi-bindings 25.1.0                     
-email-validator      2.3.0                          
-fastapi              0.136.3                                                               
-passlib              1.7.4
-psycopg2-binary      2.9.12
-pydantic             2.13.4
-pydantic_core        2.46.4
-pydantic-extra-types 2.11.1
-pydantic-settings    2.14.1
-python-dotenv        1.2.2
-python-jose          3.5.0
-python-multipart     0.0.32
-SQLAlchemy           2.0.50
-uvicorn              0.49.0
-
+alembic==1.15.2
+email_validator==2.2.0
+fastapi==0.111.0
+fastapi-cli==0.0.4
+jose==1.0.0
+passlib==1.7.4
+psycopg2==2.9.10
+psycopg2-binary==2.9.10
+pydantic==2.7.4
+PyJWT==2.10.1
+python-dotenv==1.0.1
+python-jose==3.5.0
+SQLAlchemy==2.0.40
+uvicorn==0.30.1
+virtualenv==20.29.3
