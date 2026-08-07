@@ -1,0 +1,32 @@
+services:
+  db:
+    image: postgres:17
+    container_name: postgres_db
+
+    ports:
+      - "5432:5432"
+
+    environment:
+      POSTGRES_USER: diego
+      POSTGRES_PASSWORD: "123456"
+      POSTGRES_DB: videojuegos
+
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  api:
+    build: .
+    container_name: api
+
+    ports:
+      - "8000:8000"
+
+    depends_on: 
+      - db
+
+    environment:
+      DATABASE_URI: postgresql://diego:123456@db:5432/videojuegos
+
+volumes:
+
+  postgres_data:
